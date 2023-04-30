@@ -25,8 +25,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 dependencies {
-  api(projects.npcLibApi)
-  implementation(projects.npcLibCommon)
+  compileOnlyApi(projects.npcLibApi)
+  compileOnlyApi(projects.npcLibCommon)
 
   compileOnly(libs.netty)
   compileOnly(libs.paper)
