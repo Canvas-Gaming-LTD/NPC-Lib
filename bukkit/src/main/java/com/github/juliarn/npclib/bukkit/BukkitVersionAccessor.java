@@ -54,6 +54,7 @@ public final class BukkitVersionAccessor {
     public int patch() {
       return 2;
     }
+
     @Override
     public boolean atLeast(int major, int minor, int patch) {
       return true;
