@@ -40,7 +40,11 @@ import java.util.function.Consumer;
 import net.kyori.event.EventBus;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class CommonPlatformBuilder<W, P, I, E> implements Platform.Builder<W, P, I, E> {
+public abstract class CommonPlatformBuilder<
+  W, P, I, E,
+  B extends CommonPlatform<W, P, I, E>,
+  S extends CommonPlatformBuilder<W, P, I, E, B, S>
+  > implements Platform.Builder<W, P, I, E, B, S> {
 
   protected static final boolean DEFAULT_DEBUG = Boolean.getBoolean("npc.lib.debug");
   protected static final ProfileResolver DEFAULT_PROFILE_RESOLVER = ProfileResolver.caching(ProfileResolver.mojang());
@@ -61,75 +65,75 @@ public abstract class CommonPlatformBuilder<W, P, I, E> implements Platform.Buil
   protected Consumer<NpcActionController.Builder> actionControllerDecorator;
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> debug(boolean debug) {
+  public @NotNull S debug(boolean debug) {
     this.debug = debug;
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> extension(@NotNull E extension) {
+  public @NotNull S extension(@NotNull E extension) {
     this.extension = Objects.requireNonNull(extension, "extension");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull CommonPlatformBuilder<W, P, I, E> logger(@NotNull PlatformLogger logger) {
+  public @NotNull S logger(@NotNull PlatformLogger logger) {
     this.logger = logger;
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> eventBus(@NotNull EventBus<NpcEvent> eventBus) {
+  public @NotNull S eventBus(@NotNull EventBus<NpcEvent> eventBus) {
     this.eventBus = Objects.requireNonNull(eventBus, "eventBus");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> npcTracker(@NotNull NpcTracker<W, P, I, E> npcTracker) {
+  public @NotNull S npcTracker(@NotNull NpcTracker<W, P, I, E> npcTracker) {
     this.npcTracker = Objects.requireNonNull(npcTracker, "npcTracker");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> taskManager(@NotNull PlatformTaskManager taskManager) {
+  public @NotNull S taskManager(@NotNull PlatformTaskManager taskManager) {
     this.taskManager = Objects.requireNonNull(taskManager, "taskManager");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> profileResolver(@NotNull ProfileResolver profileResolver) {
+  public @NotNull S profileResolver(@NotNull ProfileResolver profileResolver) {
     this.profileResolver = Objects.requireNonNull(profileResolver, "profileResolver");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> worldAccessor(@NotNull PlatformWorldAccessor<W> worldAccessor) {
+  public @NotNull S worldAccessor(@NotNull PlatformWorldAccessor<W> worldAccessor) {
     this.worldAccessor = Objects.requireNonNull(worldAccessor, "worldAccessor");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> versionAccessor(@NotNull PlatformVersionAccessor versionAccessor) {
+  public @NotNull S versionAccessor(@NotNull PlatformVersionAccessor versionAccessor) {
     this.versionAccessor = Objects.requireNonNull(versionAccessor, "versionAccessor");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform.Builder<W, P, I, E> packetFactory(@NotNull PlatformPacketAdapter<W, P, I, E> packetFactory) {
+  public @NotNull S packetFactory(@NotNull PlatformPacketAdapter<W, P, I, E> packetFactory) {
     this.packetAdapter = Objects.requireNonNull(packetFactory, "packetFactory");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull CommonPlatformBuilder<W, P, I, E> actionController(
+  public @NotNull S actionController(
     @NotNull Consumer<NpcActionController.Builder> decorator
   ) {
     this.actionControllerDecorator = Objects.requireNonNull(decorator, "decorator");
-    return this;
+    return this.self();
   }
 
   @Override
-  public @NotNull Platform<W, P, I, E> build() {
+  public @NotNull B build() {
     // validate that the required values are present
     if (this.extensionRequired) {
       Objects.requireNonNull(this.extension, "extension");
@@ -158,5 +162,5 @@ public abstract class CommonPlatformBuilder<W, P, I, E> implements Platform.Buil
 
   protected abstract void prepareBuild();
 
-  protected abstract @NotNull Platform<W, P, I, E> doBuild();
+  protected abstract @NotNull B doBuild();
 }

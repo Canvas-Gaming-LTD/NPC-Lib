@@ -25,78 +25,39 @@
 package com.github.juliarn.npclib.minestom;
 
 import com.github.juliarn.npclib.api.NpcActionController;
-import com.github.juliarn.npclib.api.Platform;
+import com.github.juliarn.npclib.api.NpcTracker;
+import com.github.juliarn.npclib.api.PlatformTaskManager;
+import com.github.juliarn.npclib.api.PlatformVersionAccessor;
+import com.github.juliarn.npclib.api.PlatformWorldAccessor;
+import com.github.juliarn.npclib.api.event.NpcEvent;
+import com.github.juliarn.npclib.api.log.PlatformLogger;
+import com.github.juliarn.npclib.api.profile.ProfileResolver;
+import com.github.juliarn.npclib.api.protocol.PlatformPacketAdapter;
 import com.github.juliarn.npclib.common.platform.CommonPlatform;
-import com.github.juliarn.npclib.common.platform.CommonPlatformBuilder;
-import com.github.juliarn.npclib.minestom.protocol.MinestomProtocolAdapter;
+import net.kyori.event.EventBus;
 import net.minestom.server.entity.Player;
 import net.minestom.server.extensions.Extension;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public final class MinestomPlatform extends CommonPlatformBuilder<Instance, Player, ItemStack, Extension> {
+public final class MinestomPlatform extends CommonPlatform<Instance, Player, ItemStack, Extension> {
 
-  private MinestomPlatform() {
-    this.extensionRequired = false;
-  }
-
-  public static @NotNull Platform.Builder<Instance, Player, ItemStack, Extension> minestomNpcPlatformBuilder() {
-    return new MinestomPlatform();
-  }
-
-  @Override
-  protected void prepareBuild() {
-    // set the default task manager
-    if (this.taskManager == null) {
-      this.taskManager = MinestomPlatformTaskManager.taskManager();
-    }
-
-    // set the default version accessor
-    if (this.versionAccessor == null) {
-      this.versionAccessor = MinestomVersionAccessor.versionNameBased();
-    }
-
-    // set the default world accessor
-    if (this.worldAccessor == null) {
-      this.worldAccessor = MinestomWorldAccessor.uuidBased();
-    }
-
-    // set the default packet adapter
-    if (this.packetAdapter == null) {
-      this.packetAdapter = MinestomProtocolAdapter.minestomProtocolAdapter();
-    }
-
-    // set the default logger if no logger was provided
-    if (this.logger == null) {
-      this.logger = MinestomPlatformLogger.minestomLogger();
-    }
-  }
-
-  @Override
-  protected @NotNull Platform<Instance, Player, ItemStack, Extension> doBuild() {
-    // check if we need an action controller
-    NpcActionController actionController = null;
-    if (this.actionControllerDecorator != null) {
-      NpcActionController.Builder builder = MinestomActionController.actionControllerBuilder(
-        this.eventBus,
-        this.npcTracker);
-      this.actionControllerDecorator.accept(builder);
-      actionController = builder.build();
-    }
-
-    // build the platform
-    return new CommonPlatform<>(
-      this.debug,
-      this.extension,
-      this.logger,
-      this.npcTracker,
-      this.profileResolver,
-      this.taskManager,
-      actionController,
-      this.versionAccessor,
-      this.eventBus,
-      this.worldAccessor,
-      this.packetAdapter);
+  public MinestomPlatform(
+    boolean debug,
+    @NotNull Extension extension,
+    @NotNull PlatformLogger logger,
+    @NotNull NpcTracker<Instance, Player, ItemStack, Extension> npcTracker,
+    @NotNull ProfileResolver profileResolver,
+    @NotNull PlatformTaskManager taskManager,
+    @Nullable NpcActionController actionController,
+    @NotNull PlatformVersionAccessor versionAccessor,
+    @NotNull EventBus<NpcEvent> eventBus,
+    @NotNull PlatformWorldAccessor<Instance> worldAccessor,
+    @NotNull PlatformPacketAdapter<Instance, Player, ItemStack, Extension> packetAdapter
+  ) {
+    super(debug, extension, logger, npcTracker, profileResolver, taskManager, actionController, versionAccessor,
+      eventBus, worldAccessor, packetAdapter);
   }
 }

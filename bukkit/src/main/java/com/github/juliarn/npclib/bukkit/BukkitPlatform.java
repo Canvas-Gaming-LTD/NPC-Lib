@@ -25,91 +25,39 @@
 package com.github.juliarn.npclib.bukkit;
 
 import com.github.juliarn.npclib.api.NpcActionController;
-import com.github.juliarn.npclib.api.Platform;
+import com.github.juliarn.npclib.api.NpcTracker;
+import com.github.juliarn.npclib.api.PlatformTaskManager;
+import com.github.juliarn.npclib.api.PlatformVersionAccessor;
+import com.github.juliarn.npclib.api.PlatformWorldAccessor;
+import com.github.juliarn.npclib.api.event.NpcEvent;
 import com.github.juliarn.npclib.api.log.PlatformLogger;
-import com.github.juliarn.npclib.bukkit.protocol.BukkitProtocolAdapter;
-import com.github.juliarn.npclib.bukkit.util.BukkitPlatformUtil;
+import com.github.juliarn.npclib.api.profile.ProfileResolver;
+import com.github.juliarn.npclib.api.protocol.PlatformPacketAdapter;
 import com.github.juliarn.npclib.common.platform.CommonPlatform;
-import com.github.juliarn.npclib.common.platform.CommonPlatformBuilder;
-import com.github.juliarn.npclib.common.task.AsyncPlatformTaskManager;
+import net.kyori.event.EventBus;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public final class BukkitPlatform extends CommonPlatformBuilder<World, Player, ItemStack, Plugin> {
+public final class BukkitPlatform extends CommonPlatform<World, Player, ItemStack, Plugin> {
 
-  private BukkitPlatform() {
-  }
-
-  public static @NotNull BukkitPlatform bukkitNpcPlatformBuilder() {
-    return new BukkitPlatform();
-  }
-
-  @Override
-  protected void prepareBuild() {
-    // set the profile resolver to a native platform one if not given
-    if (this.profileResolver == null) {
-      this.profileResolver = BukkitProfileResolver.profileResolver();
-    }
-
-    // set the default task manager
-    if (this.taskManager == null) {
-      if (BukkitPlatformUtil.runsOnFolia()) {
-        this.taskManager = AsyncPlatformTaskManager.taskManager(this.extension.getName());
-      } else {
-        this.taskManager = BukkitPlatformTaskManager.taskManager(this.extension);
-      }
-    }
-
-    // set the default version accessor
-    if (this.versionAccessor == null) {
-      this.versionAccessor = BukkitVersionAccessor.versionAccessor();
-    }
-
-    // set the default world accessor
-    if (this.worldAccessor == null) {
-      this.worldAccessor = BukkitWorldAccessor.worldAccessor();
-    }
-
-    // set the default packet adapter
-    if (this.packetAdapter == null) {
-      this.packetAdapter = BukkitProtocolAdapter.packetAdapter();
-    }
-
-    // set the default logger if no logger was provided
-    if (this.logger == null) {
-      this.logger = PlatformLogger.fromJul(this.extension.getLogger());
-    }
-  }
-
-  @Override
-  protected @NotNull Platform<World, Player, ItemStack, Plugin> doBuild() {
-    // check if we need an action controller
-    NpcActionController actionController = null;
-    if (this.actionControllerDecorator != null) {
-      NpcActionController.Builder builder = BukkitActionController.actionControllerBuilder(
-        this.extension,
-        this.eventBus,
-        this.versionAccessor,
-        this.npcTracker);
-      this.actionControllerDecorator.accept(builder);
-      actionController = builder.build();
-    }
-
-    // build the platform
-    return new CommonPlatform<>(
-      this.debug,
-      this.extension,
-      this.logger,
-      this.npcTracker,
-      this.profileResolver,
-      this.taskManager,
-      actionController,
-      this.versionAccessor,
-      this.eventBus,
-      this.worldAccessor,
-      this.packetAdapter);
+  public BukkitPlatform(
+    boolean debug,
+    @NotNull Plugin extension,
+    @NotNull PlatformLogger logger,
+    @NotNull NpcTracker<World, Player, ItemStack, Plugin> npcTracker,
+    @NotNull ProfileResolver profileResolver,
+    @NotNull PlatformTaskManager taskManager,
+    @Nullable NpcActionController actionController,
+    @NotNull PlatformVersionAccessor versionAccessor,
+    @NotNull EventBus<NpcEvent> eventBus,
+    @NotNull PlatformWorldAccessor<World> worldAccessor,
+    @NotNull PlatformPacketAdapter<World, Player, ItemStack, Plugin> packetAdapter
+  ) {
+    super(debug, extension, logger, npcTracker, profileResolver, taskManager, actionController, versionAccessor,
+      eventBus, worldAccessor, packetAdapter);
   }
 }

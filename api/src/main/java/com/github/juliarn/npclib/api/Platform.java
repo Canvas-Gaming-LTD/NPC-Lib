@@ -59,30 +59,33 @@ public interface Platform<W, P, I, E> {
 
   @NotNull Optional<NpcActionController> actionController();
 
-  interface Builder<W, P, I, E> {
+  interface Builder<W, P, I, E, B extends Platform<W, P, I, E>, S extends Builder<W, P, I, E, B, S>> {
 
-    @NotNull Builder<W, P, I, E> debug(boolean debug);
+    @NotNull S debug(boolean debug);
 
-    @NotNull Builder<W, P, I, E> extension(@NotNull E extension);
+    @NotNull S extension(@NotNull E extension);
 
-    @NotNull Builder<W, P, I, E> logger(@NotNull PlatformLogger logger);
+    @NotNull S logger(@NotNull PlatformLogger logger);
 
-    @NotNull Builder<W, P, I, E> eventBus(@NotNull EventBus<NpcEvent> eventBus);
+    @NotNull S eventBus(@NotNull EventBus<NpcEvent> eventBus);
 
-    @NotNull Builder<W, P, I, E> npcTracker(@NotNull NpcTracker<W, P, I, E> npcTracker);
+    @NotNull S npcTracker(@NotNull NpcTracker<W, P, I, E> npcTracker);
 
-    @NotNull Builder<W, P, I, E> taskManager(@NotNull PlatformTaskManager taskManager);
+    @NotNull S taskManager(@NotNull PlatformTaskManager taskManager);
 
-    @NotNull Builder<W, P, I, E> profileResolver(@NotNull ProfileResolver profileResolver);
+    @NotNull S profileResolver(@NotNull ProfileResolver profileResolver);
 
-    @NotNull Builder<W, P, I, E> worldAccessor(@NotNull PlatformWorldAccessor<W> worldAccessor);
+    @NotNull S worldAccessor(@NotNull PlatformWorldAccessor<W> worldAccessor);
 
-    @NotNull Builder<W, P, I, E> versionAccessor(@NotNull PlatformVersionAccessor versionAccessor);
+    @NotNull S versionAccessor(@NotNull PlatformVersionAccessor versionAccessor);
 
-    @NotNull Builder<W, P, I, E> packetFactory(@NotNull PlatformPacketAdapter<W, P, I, E> packetFactory);
+    @NotNull S packetFactory(@NotNull PlatformPacketAdapter<W, P, I, E> packetFactory);
 
-    @NotNull Builder<W, P, I, E> actionController(@NotNull Consumer<NpcActionController.Builder> decorator);
+    @NotNull S actionController(@NotNull Consumer<NpcActionController.Builder> decorator);
 
-    @NotNull Platform<W, P, I, E> build();
+    @NotNull
+    S self();
+
+    @NotNull B build();
   }
 }
