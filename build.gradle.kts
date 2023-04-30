@@ -26,6 +26,8 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
+  java
+  `java-library`
   alias(libs.plugins.spotless)
   alias(libs.plugins.shadow) apply false
 }
@@ -58,8 +60,9 @@ allprojects {
 subprojects {
   // apply all plugins only to subprojects
   apply(plugin = "checkstyle")
-  apply(plugin = "java-library")
-  apply(plugin = "maven-publish")
+  apply<JavaPlugin>()
+  apply<JavaLibraryPlugin>()
+  apply<MavenPublishPlugin>()
   apply(plugin = "com.diffplug.spotless")
   apply(plugin = "com.github.johnrengelman.shadow")
 
@@ -116,20 +119,32 @@ subprojects {
     }
   }
 
-  tasks.withType<Javadoc> {
-    val options = options as? StandardJavadocDocletOptions ?: return@withType
+  tasks {
+    javadoc {
+      options.encoding = Charsets.UTF_8.name()
+      (options as StandardJavadocDocletOptions).tags("todo")
+    }
 
-    // options
-    options.encoding = "UTF-8"
-    options.memberLevel = JavadocMemberLevel.PRIVATE
-    options.addStringOption("-html5")
-    options.addBooleanOption("Xdoclint:-missing", true)
+    val javadocJar by creating(Jar::class) {
+      dependsOn("javadoc")
+      archiveClassifier.set("javadoc")
+      from(javadoc)
+    }
+
+    val sourcesJar by creating(Jar::class) {
+      dependsOn("classes")
+      archiveClassifier.set("sources")
+      from(sourceSets["main"].allSource)
+    }
   }
 
   extensions.configure<PublishingExtension> {
     publications.apply {
       create("maven", MavenPublication::class.java).apply {
         from(components.getByName("java"))
+
+        artifact(tasks["sourcesJar"])
+        artifact(tasks["javadocJar"])
 
         pom {
           name.set(project.name)
