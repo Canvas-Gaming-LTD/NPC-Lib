@@ -73,7 +73,7 @@ interface DefaultEntityMetadata {
       .baseIndex(6)
       .type(EntityPose.class)
       .inputConverter(value -> value ? EntityPose.CROUCHING : EntityPose.STANDING)
-      .availabilityChecker(versionAccessor -> versionAccessor.atLeast(1, 14, 0))
+      .availabilityChecker(versionAccessor -> true)
       .build())
     .build();
 

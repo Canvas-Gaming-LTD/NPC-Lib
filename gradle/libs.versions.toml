@@ -18,7 +18,6 @@ minestom = "8ad2c7701f"
 paper = "1.19.4-R0.1-SNAPSHOT"
 
 # platform extensions
-paperLib = "1.0.8"
 protocolLib = "ab32f938d7"
 
 
@@ -36,7 +35,6 @@ sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "spong
 minestom = { group = "com.github.Minestom", name = "Minestom", version.ref = "minestom" }
 
 # platform extensions
-paperLib = { group = "io.papermc", name = "paperlib", version.ref = "paperLib" }
 protocolLib = { group = "com.github.dmulloy2", name = "ProtocolLib", version.ref = "protocolLib" }
 
 # dummy version, just here for renovate to detect that there is something to update

@@ -28,8 +28,6 @@ dependencies {
   api(projects.npcLibApi)
   implementation(projects.npcLibCommon)
 
-  implementation(libs.paperLib)
-
   compileOnly(libs.netty)
   compileOnly(libs.paper)
   compileOnly(libs.protocolLib)

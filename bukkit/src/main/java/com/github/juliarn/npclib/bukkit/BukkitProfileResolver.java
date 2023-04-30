@@ -28,7 +28,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.github.juliarn.npclib.api.profile.Profile;
 import com.github.juliarn.npclib.api.profile.ProfileProperty;
 import com.github.juliarn.npclib.api.profile.ProfileResolver;
-import io.papermc.lib.PaperLib;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -45,18 +44,7 @@ public final class BukkitProfileResolver {
   }
 
   public static @NotNull ProfileResolver profileResolver() {
-    // check if we're on paper and newer than 1.12 (when the profile API was introduced)
-    if (PaperLib.isPaper() && PaperLib.isVersion(12)) {
-      return PaperProfileResolver.INSTANCE;
-    }
-
-    // check if we're on spigot and newer than 1.18.2 (when the profile API was introduced)
-    if (PaperLib.isSpigot() && PaperLib.isVersion(18, 2)) {
-      return SpigotProfileResolver.INSTANCE;
-    }
-
-    // use fallback resolver
-    return LegacyResolver.INSTANCE;
+    return PaperProfileResolver.INSTANCE;
   }
 
   private static final class PaperProfileResolver implements ProfileResolver {

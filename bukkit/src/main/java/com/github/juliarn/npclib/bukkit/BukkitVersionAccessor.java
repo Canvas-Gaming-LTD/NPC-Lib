@@ -25,7 +25,6 @@
 package com.github.juliarn.npclib.bukkit;
 
 import com.github.juliarn.npclib.api.PlatformVersionAccessor;
-import io.papermc.lib.PaperLib;
 
 public final class BukkitVersionAccessor {
 
@@ -48,17 +47,16 @@ public final class BukkitVersionAccessor {
 
     @Override
     public int minor() {
-      return PaperLib.getMinecraftVersion();
+      return 18;
     }
 
     @Override
     public int patch() {
-      return PaperLib.getMinecraftPatchVersion();
+      return 2;
     }
-
     @Override
     public boolean atLeast(int major, int minor, int patch) {
-      return PaperLib.isVersion(minor, patch);
+      return true;
     }
   }
 }

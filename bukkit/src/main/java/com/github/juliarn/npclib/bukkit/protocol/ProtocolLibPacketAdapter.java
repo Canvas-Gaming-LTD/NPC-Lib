@@ -179,25 +179,17 @@ final class ProtocolLibPacketAdapter implements PlatformPacketAdapter<World, Pla
           //noinspection unchecked
           Optional<Component> optionalComponent = (Optional<Component>) value;
           // check if the display name is wrapped in a component
-          if (versionAccess.atLeast(1, 13, 0)) {
-            // construct the entry
-            return new AbstractMap.SimpleImmutableEntry<>(
-              OPTIONAL_COMPONENT_TYPE,
-              optionalComponent.map(component -> {
-                // build the component based on the given input
-                if (component.rawMessage() != null) {
-                  return WrappedChatComponent.fromLegacyText(component.rawMessage());
-                } else {
-                  return WrappedChatComponent.fromJson(component.encodedJsonMessage());
-                }
-              }).map(WrappedChatComponent::getHandle));
-          } else {
-            return new AbstractMap.SimpleImmutableEntry<>(String.class, optionalComponent
-              .map(component -> Objects.requireNonNull(
-                component.rawMessage(),
-                "Versions older than 1.13 don't support json component"))
-              .orElse(null));
-          }
+          // construct the entry
+          return new AbstractMap.SimpleImmutableEntry<>(
+            OPTIONAL_COMPONENT_TYPE,
+            optionalComponent.map(component -> {
+              // build the component based on the given input
+              if (component.rawMessage() != null) {
+                return WrappedChatComponent.fromLegacyText(component.rawMessage());
+              } else {
+                return WrappedChatComponent.fromJson(component.encodedJsonMessage());
+              }
+            }).map(WrappedChatComponent::getHandle));
         })
       .build();
   }
