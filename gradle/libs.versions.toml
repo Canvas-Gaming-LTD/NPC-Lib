@@ -20,7 +20,6 @@ paper = "1.19.4-R0.1-SNAPSHOT"
 # platform extensions
 paperLib = "1.0.8"
 protocolLib = "ab32f938d7"
-packetEvents = "54704811b3"
 
 
 [libraries]
@@ -39,7 +38,6 @@ minestom = { group = "com.github.Minestom", name = "Minestom", version.ref = "mi
 # platform extensions
 paperLib = { group = "io.papermc", name = "paperlib", version.ref = "paperLib" }
 protocolLib = { group = "com.github.dmulloy2", name = "ProtocolLib", version.ref = "protocolLib" }
-packetEvents = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "packetEvents" }
 
 # dummy version, just here for renovate to detect that there is something to update
 checkstyleTools = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyleTools" }

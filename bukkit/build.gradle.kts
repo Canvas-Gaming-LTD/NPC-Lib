@@ -29,7 +29,6 @@ dependencies {
   implementation(projects.npcLibCommon)
 
   implementation(libs.paperLib)
-  implementation(libs.packetEvents)
 
   compileOnly(libs.netty)
   compileOnly(libs.paper)
@@ -41,8 +40,6 @@ tasks.withType<ShadowJar> {
 
   relocate("com.google.gson", "com.github.juliarn.npclib.relocate.gson")
   relocate("io.papermc.lib", "com.github.juliarn.npclib.relocate.paperlib")
-  relocate("io.github.retrooper", "com.github.juliarn.npclib.relocate.io.packetevents")
-  relocate("com.github.retrooper", "com.github.juliarn.npclib.relocate.com.packetevents")
 
   dependencies {
     exclude("plugin.yml")
