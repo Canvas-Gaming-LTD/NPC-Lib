@@ -26,7 +26,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 rootProject.name = "npc-lib"
-include(":api", ":common", ":bukkit", ":minestom", ":ext")
+include(":api", ":common", ":bukkit")
 
 // external modules
 include(":ext:labymod")
