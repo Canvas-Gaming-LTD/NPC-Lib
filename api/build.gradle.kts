@@ -31,4 +31,10 @@ dependencies {
 
 tasks.withType<ShadowJar> {
   minimize()
+
+  fun rel(vararg relocations: String) {
+    relocations.forEach { relocate(it, "org.canvasgaming.shades.$it") }
+  }
+
+  rel("com.google.gson")
 }

@@ -39,4 +39,10 @@ tasks.withType<ShadowJar> {
   dependencies {
     exclude("plugin.yml")
   }
+
+  fun rel(vararg relocations: String) {
+    relocations.forEach { relocate(it, "org.canvasgaming.shades.$it") }
+  }
+
+  rel("com.google.gson")
 }
