@@ -36,9 +36,6 @@ dependencies {
 tasks.withType<ShadowJar> {
   dependsOn(":npc-lib-common:shadowJar")
 
-  relocate("com.google.gson", "com.github.juliarn.npclib.relocate.gson")
-  relocate("io.papermc.lib", "com.github.juliarn.npclib.relocate.paperlib")
-
   dependencies {
     exclude("plugin.yml")
   }

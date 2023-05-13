@@ -31,5 +31,4 @@ dependencies {
 
 tasks.withType<ShadowJar> {
   minimize()
-  relocate("com.google.gson", "com.github.juliarn.npclib.relocate.gson")
 }
