@@ -334,7 +334,6 @@ final class ProtocolLibPacketAdapter implements PlatformPacketAdapter<World, Pla
         false,
         EnumWrappers.NativeGameMode.CREATIVE,
         wrappedGameProfile,
-        null,
         null);
       container.getPlayerInfoDataLists().write(playerInfoDataIndex, Lists.newArrayList(playerInfoData));
 
@@ -478,8 +477,8 @@ final class ProtocolLibPacketAdapter implements PlatformPacketAdapter<World, Pla
 
   @Override
   public @NotNull <T, O> OutboundPacket<World, Player, ItemStack, Plugin> createEntityMetaPacket(
-    @NotNull T value,
-    @NotNull EntityMetadataFactory<T, O> metadata
+    @NotNull EntityMetadataFactory<T, O> metadata,
+    @NotNull T value
   ) {
     return (player, npc) -> {
       // create the entity meta
