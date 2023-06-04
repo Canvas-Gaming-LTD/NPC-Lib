@@ -93,15 +93,13 @@ public final class BukkitPlatformBuilder extends
   @Override
   protected BukkitPlatform doBuild() {
     // check if we need an action controller
-    NpcActionController actionController = null;
+    NpcActionController.Builder actionControllerBuilder = BukkitActionController.actionControllerBuilder(
+      this.extension,
+      this.eventBus,
+      this.versionAccessor,
+      this.npcTracker);
     if (this.actionControllerDecorator != null) {
-      NpcActionController.Builder builder = BukkitActionController.actionControllerBuilder(
-        this.extension,
-        this.eventBus,
-        this.versionAccessor,
-        this.npcTracker);
-      this.actionControllerDecorator.accept(builder);
-      actionController = builder.build();
+      this.actionControllerDecorator.accept(actionControllerBuilder);
     }
 
     // build the platform
@@ -112,7 +110,7 @@ public final class BukkitPlatformBuilder extends
       this.npcTracker,
       this.profileResolver,
       this.taskManager,
-      actionController,
+      actionControllerBuilder.build(),
       this.versionAccessor,
       this.eventBus,
       this.worldAccessor,
