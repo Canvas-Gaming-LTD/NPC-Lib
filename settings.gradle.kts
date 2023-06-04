@@ -28,9 +28,6 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 rootProject.name = "npc-lib"
 include(":api", ":common", ":bukkit")
 
-// external modules
-include(":ext:labymod")
-
 // prefix all submodules with the name of the root project
 changeProjectNames(rootProject.name, rootProject)
 
