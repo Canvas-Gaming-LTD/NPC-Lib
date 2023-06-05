@@ -97,6 +97,9 @@ public interface Npc<W, P, I, E> extends NpcFlaggedObject {
 
   interface Builder<W, P, I, E> extends NpcFlaggedBuilder<Builder<W, P, I, E>> {
 
+    @Nullable
+    Profile.Resolved profile();
+
     @NotNull Builder<W, P, I, E> entityId(int id);
 
     @NotNull Builder<W, P, I, E> position(@NotNull Position position);

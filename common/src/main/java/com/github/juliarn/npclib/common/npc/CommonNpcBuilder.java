@@ -57,6 +57,12 @@ public class CommonNpcBuilder<W, P, I, E>
     this.platform = platform;
   }
 
+  @Nullable
+  @Override
+  public Profile.Resolved profile() {
+    return this.profile;
+  }
+
   @Override
   public @NotNull Npc.Builder<W, P, I, E> entityId(int id) {
     // validate the npc entity id
